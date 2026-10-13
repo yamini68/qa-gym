@@ -1,6 +1,6 @@
 ```
 feature login {
-     Login stuff added
+     Login stuff added - login page is now functinaly use can login
 }
 
 ```
