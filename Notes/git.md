@@ -4,3 +4,10 @@ feature login {
 }
 
 ```
+
+```
+feature home {
+     home page added 
+}
+
+```
