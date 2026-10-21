@@ -1258,3 +1258,106 @@ Remember the difference:
 - Resolved describes a Promise whose outcome has been settled or locked in, sometimes by adopting another Promise's outcome.
 - Fulfilled is the specific state meaning the Promise succeeded.
 - Rejected means it failed.
+
+Here are concise, copy-paste-ready notes for your `Notes/git.md`, based on what you encountered today.
+
+# Git Notes — Today's Learnings
+
+## 1. `git add .` vs `git add -A`
+
+- `git add .` — stages new and modified files under the current directory.
+- `git add -A` — stages all changes across the repository's working tree.
+- If you're inside a subfolder, `git add .` may not stage files in sibling folders.
+
+**Example:**
+
+```
+# Current directory: qa-gym/JS
+git add .
+
+# Stage a file in the sibling Notes folder
+git add ../Notes/TheEmptyReport.md
+
+# Stage all changes across the repository
+git add -A
+```
+
+`..` means the parent directory; `.` means the current directory.
+
+## 2. Understand `git status`
+
+```
+git status
+```
+
+Use this to check:
+
+- Which files are modified.
+- Which files are untracked.
+- Which files are staged and ready to commit.
+- Whether your branch is ahead of or behind its remote branch.
+
+**Untracked** means Git knows the file exists but isn't tracking it yet. Use `git add` to start tracking it.
+
+## 3. Non-fast-forward push error
+
+```
+! [rejected] main -> main (non-fast-forward)
+```
+
+**Why it happened:** GitHub had commits that my local `main` branch didn't contain. Git rejected the push to protect the remote history.
+
+**Fix:**
+
+```
+git pull --rebase origin main
+git push -u origin main
+```
+
+Rebase replayed my local commit on top of the latest remote commits, allowing the histories to be updated safely.
+
+## 4. Understanding `git log --graph`
+
+```
+git log --oneline --graph --decorate --all -10
+```
+
+- `--oneline` — displays each commit on one line.
+- `--graph` — displays branches and merge relationships.
+- `--decorate` — shows branch and remote references.
+- `--all` — includes commits reachable from all local references.
+- `-10` — displays up to 10 commits.
+
+Useful for understanding why local and remote branches have diverged.
+
+## 5. Rebase changes commit hashes
+
+After running:
+
+```
+git pull --rebase origin main
+```
+
+My `The empty report` commit changed from `eb08274` to `b98048d`.
+
+This is normal: rebase creates a new commit with the same changes but a different history position, so its hash changes.
+
+## My key takeaways
+
+- Check `git status` before committing or pushing.
+- Remember that `git add .` depends on the current directory.
+- Use `git add -A` when I want to stage changes throughout the repository.
+- If a push is rejected because the remote is ahead, inspect the history and integrate remote changes before pushing.
+- Use `git log --oneline --graph --decorate --all` to visualize commit history.
+
+Suggested workflow for your next commit:
+
+```
+git status
+git add -A
+git status
+git commit -m "Add JavaScript report challenge notes"
+git push
+```
+
+One important habit: check `git status` after staging. It confirms exactly which files will be included in your next commit.
