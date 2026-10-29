@@ -234,3 +234,61 @@ If you receive a `403 Permission denied` error, check which GitHub account your 
 8. Why might `git push` fail with a `403` error?
 
 Try answering these questions without looking at the notes. If you can explain the answers in your own words, you understand the fundamentals.
+
+
+## 9. What I Learned Today — Branches, HEAD & Recovery
+
+### 1. What is a branch pointer?
+- A branch is a pointer to a commit, usually the latest commit on that branch.
+- When I create a new commit, the current branch pointer moves to that new commit.
+- `HEAD` tells Git which branch or commit I'm currently working on.
+
+### 2. Does creating a branch create a new commit?
+**No.** Creating a branch creates a new pointer at the current commit.
+
+Example:
+```bash
+git branch practice/conflict
+```
+If `main` points to commit C3, the new branch also points to C3. No new commit is created.
+
+### 3. What happens when I commit on a new branch?
+```bash
+git switch practice/conflict
+git add .
+git commit -m "Add practice notes"
+```
+- A new commit is created.
+- `practice/conflict` moves to the new commit.
+- `main` stays at its previous commit.
+- The branches share their earlier history.
+
+### 4. What are uncommitted changes?
+Changes that haven't been saved in a commit.
+
+- **Unstaged:** Edited files that haven't been added using `git add`.
+- **Staged:** Changes added using `git add` but not yet committed.
+
+Check them using:
+```bash
+git status
+```
+
+### 5. What does `git reflog` show?
+- Records recent movements of `HEAD`.
+- Helps me find earlier commits after commands like `git reset`.
+- It doesn't recover commits automatically; I must select the correct commit.
+
+```bash
+git reflog
+git reset --hard <commit-id>
+```
+
+**Warning:** `git reset --hard` can discard uncommitted changes and reset files to match the selected commit.
+
+### Remember
+- `git branch` → Creates a branch pointer.
+- `git commit` → Creates a commit and advances the current branch.
+- `git switch` → Switches the current branch.
+- `git status` → Shows the state of my files.
+- `git reflog` → Helps me find previous HEAD positions.
